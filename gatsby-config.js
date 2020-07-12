@@ -114,6 +114,7 @@ module.exports = {
         trackingId: `UA-151755695-2`,
       },
     },
+    /*
     `gatsby-plugin-feed`,
     {
       resolve: `gatsby-plugin-manifest`,
@@ -127,6 +128,7 @@ module.exports = {
         icon: `content/assets/gatsby-icon.png`,
       },
     },
+    */
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-plugin-typography`,
