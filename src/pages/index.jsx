@@ -1,12 +1,12 @@
-import React from "react"
-import { Link, graphql } from "gatsby"
+import React from 'react';
+import { Link, graphql } from 'gatsby';
 import Img from 'gatsby-image';
 import styled from 'styled-components';
 
-import Bio from "../components/bio"
-import Layout from "../components/layout"
-import SEO from "../components/seo"
-import { rhythm } from "../utils/typography"
+import Bio from '../components/Bio';
+import Layout from '../components/Layout';
+import SEO from '../components/SEO';
+import { rhythm } from '../utils/typography';
 
 const Header = styled.div`
   margin-bottom: ${rhythm(1 / 4)};
@@ -23,23 +23,23 @@ const Article = styled.article`
 `;
 
 const BlogIndex = ({ data, location }) => {
-  const siteTitle = data.site.siteMetadata.title
-  const posts = data.allMdx.edges;
+  const { site: { siteMetadata: { title: siteTitle } } } = data;
+  const { allMdx: { edges: posts } } = data;
 
   return (
     <Layout location={location} title={siteTitle}>
       <SEO title="All posts" />
       <Bio />
       Has mostly nothing to do with horses or stables
-      {posts.map(({ node }, index) => {
-        const title = node.frontmatter.title || node.fields.slug
-        const cover = node.frontmatter.cover;
+      {posts.map(({ node }) => {
+        const title = node.frontmatter.title || node.fields.slug;
+        const { cover } = node.frontmatter;
         return (
-          <Link style={{ boxShadow: 'none', color: 'inherit', marginTop: '490px' }} to={node.fields.slug}>
-            {!!cover ? <Img fluid={cover.childImageSharp.fluid} /> : null}
+          <Link style={{ boxShadow: 'none', color: 'inherit' }} to={node.fields.slug} key={node.fields.slug}>
+            {cover ? <Img fluid={cover.childImageSharp.fluid} /> : null}
             <Article>
               <Header>
-                  <h3>{title}</h3>
+                <h3>{title}</h3>
                 <small>{node.frontmatter.date}</small>
               </Header>
               <section>
@@ -51,13 +51,13 @@ const BlogIndex = ({ data, location }) => {
               </section>
             </Article>
           </Link>
-        )
+        );
       })}
     </Layout>
-  )
-}
+  );
+};
 
-export default BlogIndex
+export default BlogIndex;
 
 export const pageQuery = graphql`
   query {
@@ -89,4 +89,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

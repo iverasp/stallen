@@ -8,11 +8,8 @@ const StyledCode = styled.div`
   font-family: monospace;
 `;
 
-export const Code = ({ text }) => {
-
-return (
+export const Code = ({ text }) => (
   <StyledCode>
     {text}
   </StyledCode>
 );
-}

@@ -5,12 +5,11 @@ import { usePersistedState } from '../../hooks/usePersistedState';
 
 const Name = styled.div``;
 const Pages = styled.div`
-  display: ${props => props.show ? 'inline' : 'none'};
+  display: ${(props) => (props.show ? 'inline' : 'none')};
 `;
 const Page = styled.div``;
 
 export const Category = (props) => {
-
   const { name, pages } = props;
   const [showPages, setShowPages] = usePersistedState(`show-sidebar-category-${name}`, false);
 

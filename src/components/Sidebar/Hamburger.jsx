@@ -15,10 +15,13 @@ const Line = styled.div`
   background: black;
 `;
 
-export const Hamburger = (props) => (
-  <StyledHamburger onClick={props.onClick}>
-    <Line />
-    <Line />
-    <Line />
-  </StyledHamburger>
-);
+export const Hamburger = (props) => {
+  const { onClick } = props;
+  return (
+    <StyledHamburger onClick={onClick}>
+      <Line />
+      <Line />
+      <Line />
+    </StyledHamburger>
+  );
+};

@@ -1,5 +1,5 @@
-import React from "react"
-import { useStaticQuery, graphql } from "gatsby"
+import React from 'react';
+import { useStaticQuery, graphql } from 'gatsby';
 import styled from 'styled-components';
 import { Category } from './Category';
 import { Hamburger } from './Hamburger';
@@ -13,7 +13,6 @@ const StyledSidebar = styled.div`
 `;
 
 const Sidebar = () => {
-
   const [showSidebar, setShowSidebar] = usePersistedState('showSidebar', false);
 
   const data = useStaticQuery(graphql`
@@ -36,15 +35,15 @@ const Sidebar = () => {
   `);
 
   const categories = [];
-  data.allMdx.edges.forEach(d => {
+  data.allMdx.edges.forEach((d) => {
     const { node: { frontmatter: { category } } } = d;
     const { node } = d;
     if (Object.keys(categories).indexOf(category) !== -1) {
       categories[category].push(node);
     } else {
-      categories[category] = [node]
+      categories[category] = [node];
     }
-  })
+  });
 
   return (
     <StyledSidebar>
@@ -53,7 +52,7 @@ const Sidebar = () => {
         <Category key={key} name={key} pages={categories[key]} />
       ))}
     </StyledSidebar>
-  )
-}
+  );
+};
 
 export default Sidebar;
