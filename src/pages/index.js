@@ -34,7 +34,6 @@ const BlogIndex = ({ data, location }) => {
       {posts.map(({ node }, index) => {
         const title = node.frontmatter.title || node.fields.slug
         const cover = node.frontmatter.cover;
-        console.log('cover', cover);
         return (
           <Link style={{ boxShadow: 'none', color: 'inherit', marginTop: '490px' }} to={node.fields.slug}>
             {!!cover ? <Img fluid={cover.childImageSharp.fluid} /> : null}
