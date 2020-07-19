@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, graphql } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
+import { DiscussionEmbed } from 'disqus-react';
 
 import Bio from '../components/bio'
 import Layout from '../components/layout'
@@ -12,7 +13,13 @@ class BlogPostTemplate extends React.Component {
     const post = this.props.data.mdx
     const siteTitle = this.props.data.site.siteMetadata.title
     const { previous, next } = this.props.pageContext
-    console.log(this.props.pageContext)
+
+    const { id } = this.props.data.mdx;
+
+    const disqusConfig = {
+      shortname: process.env.GATSBY_DISQUS_NAME,
+      config: { identifier: id }
+    };
 
     return (
       <Layout location={this.props.location} title={siteTitle}>
@@ -35,6 +42,7 @@ class BlogPostTemplate extends React.Component {
           }}
         />
         <Bio />
+        <DiscussionEmbed {...disqusConfig} />
 
         <ul
           style={{
@@ -81,6 +89,9 @@ export const pageQuery = graphql`
     mdx(fields: { slug: { eq: $slug } }) {
       id
       excerpt(pruneLength: 160)
+      fields {
+        slug
+      }
       frontmatter {
         title
         date(formatString: "MMMM DD, YYYY")

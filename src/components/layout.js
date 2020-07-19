@@ -1,7 +1,13 @@
 import React from "react"
 import { Link } from "gatsby"
+import styled from 'styled-components';
 
 import { rhythm, scale } from "../utils/typography"
+
+const SidebarLayout = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
 const Layout = ({ location, title, children }) => {
   const rootPath = `${__PATH_PREFIX__}/`
