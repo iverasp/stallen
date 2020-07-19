@@ -9,11 +9,17 @@ import SEO from "../components/seo"
 import { rhythm } from "../utils/typography"
 
 const Header = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: ${rhythm(1 / 4)};
+  margin-top: ${rhythm(3 / 4)};
+
+  h3 {
+    margin: 0;
+    color: #3066BE;
+  }
 `;
 
-const Section = styled.div`
-  margin-top: 20px;
+const Article = styled.article`
+  margin-bottom: ${rhythm(2)};
 `;
 
 const BlogIndex = ({ data, location }) => {
@@ -30,27 +36,21 @@ const BlogIndex = ({ data, location }) => {
         const cover = node.frontmatter.cover;
         console.log('cover', cover);
         return (
-          <Link style={{ boxShadow: 'none', color: 'inherit' }} to={node.fields.slug}>
-            <Header>
-              <h3
-                style={{
-                  marginBottom: rhythm(1 / 4),
-                  color: '#3066BE'
-                }}
-              >
-                
-                  {title}
-              </h3>
-              <small>{node.frontmatter.date}</small>
-            </Header>
+          <Link style={{ boxShadow: 'none', color: 'inherit', marginTop: '490px' }} to={node.fields.slug}>
             {!!cover ? <Img fluid={cover.childImageSharp.fluid} /> : null}
-            <Section>
-              <p
-                dangerouslySetInnerHTML={{
-                  __html: node.frontmatter.description || node.excerpt,
-                }}
-              />
-            </Section>
+            <Article>
+              <Header>
+                  <h3>{title}</h3>
+                <small>{node.frontmatter.date}</small>
+              </Header>
+              <section>
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: node.frontmatter.description || node.excerpt,
+                  }}
+                />
+              </section>
+            </Article>
           </Link>
         )
       })}
