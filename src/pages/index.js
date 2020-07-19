@@ -1,10 +1,20 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
+import Img from 'gatsby-image';
+import styled from 'styled-components';
 
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import { rhythm } from "../utils/typography"
+
+const Header = styled.div`
+  margin-bottom: 20px;
+`;
+
+const Section = styled.div`
+  margin-top: 20px;
+`;
 
 const BlogIndex = ({ data, location }) => {
   const siteTitle = data.site.siteMetadata.title
@@ -15,30 +25,33 @@ const BlogIndex = ({ data, location }) => {
       <SEO title="All posts" />
       <Bio />
       Has mostly nothing to do with horses or stables
-      {posts.map(({ node }) => {
+      {posts.map(({ node }, index) => {
         const title = node.frontmatter.title || node.fields.slug
+        const cover = node.frontmatter.cover;
+        console.log('cover', cover);
         return (
-          <article key={node.fields.slug}>
-            <header>
+          <Link style={{ boxShadow: 'none', color: 'inherit' }} to={node.fields.slug}>
+            <Header>
               <h3
                 style={{
                   marginBottom: rhythm(1 / 4),
+                  color: '#3066BE'
                 }}
               >
-                <Link style={{ boxShadow: `none` }} to={node.fields.slug}>
+                
                   {title}
-                </Link>
               </h3>
               <small>{node.frontmatter.date}</small>
-            </header>
-            <section>
+            </Header>
+            {!!cover ? <Img fluid={cover.childImageSharp.fluid} /> : null}
+            <Section>
               <p
                 dangerouslySetInnerHTML={{
                   __html: node.frontmatter.description || node.excerpt,
                 }}
               />
-            </section>
-          </article>
+            </Section>
+          </Link>
         )
       })}
     </Layout>
@@ -64,6 +77,14 @@ export const pageQuery = graphql`
           frontmatter {
             date(formatString: "MMMM DD, YYYY")
             title
+            cover {
+              publicURL
+              childImageSharp {
+                fluid(maxWidth: 590) {
+                  ...GatsbyImageSharpFluid_noBase64
+                }
+              }
+            }
           }
         }
       }
