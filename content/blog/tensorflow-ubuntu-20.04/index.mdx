@@ -1,0 +1,73 @@
+---
+title: Tensorflow setup on Ubuntu Server 20.04
+date: "2020-12-26T22:12:03.284Z"
+description: Setting up Tensorflow with CUDA support on Ubuntu Server 20.04 using Docker
+category: AI
+---
+
+## Install Nvidia drivers
+
+Search for available drivers
+
+```bash
+sudo apt update
+sudo apt search nvidia-drivers
+```
+
+Find the latest version that is `headless` and install that.
+
+In my case
+
+```bash
+sudo apt install nvidia-headless-455
+```
+
+You should also install `nvidia-utils`, which contains e.g. `nvidia-smi`.
+
+```bash
+sudo apt install nvidia-utils-455
+```
+
+Restart the computer, or load the module with
+
+```bash
+
+```
+
+## Install nvidia-docker2
+
+Following [the guide here](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#setting-up-nvidia-container-toolkit)
+
+```bash
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+   && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
+   && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+```
+
+```bash
+sudo apt-get update
+sudo apt-get install -y nvidia-docker2
+```
+
+Restart docker and test a container
+
+```bash
+sudo systemctl restart docker
+sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+```
+
+Which should list your Nvidia GPUs with their workload, temperature, memory usage, etc.
+
+## Test a Tensorflow-container
+
+```bash
+docker run --gpus all -it --rm tensorflow/tensorflow:latest-gpu \
+   python -c "import tensorflow as tf; print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
+```
+
+Which should state that it found a GPU, e.g.
+
+```bash
+2021-02-08 19:32:41.055310: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10271 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080 Ti, pci bus id: 0000:09:00.0, compute capability: 6.1)
+tf.Tensor(871.8593, shape=(), dtype=float32)
+```
